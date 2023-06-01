@@ -1,0 +1,165 @@
+<!--
+  Generated template for the ComplaintDetailPage page.
+  
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header class="main-header remove">
+  <ion-navbar>
+    <ion-title> Comaplaint Detail</ion-title>
+    
+    <!-- <div class="header-icons"  >
+      <button ion-button class="cs-hd-img mr16" (click)="cancelComplaint('amount')">
+        <img src="assets/imgs/rupee.svg">
+      </button>
+    </div> -->
+  </ion-navbar>
+</ion-header>
+
+<ion-content >
+  
+  
+  <div class="padding16">
+    <div class="card-outer" >
+      <table>
+        <tr>
+          <td class="w120">Complaint No.</td>
+          <td>COM#{{complaint_detail.complaintId}}</td>
+        </tr>
+        <tr>
+          <td >Date Created</td>
+          <td>{{complaint_detail.compalintDate | date:'d MMMM y'}}</td>
+        </tr>
+        <!-- <tr>
+          <td >Name</td>
+          <td>{{complaint_detail.customerName}}</td>
+        </tr> -->
+        <tr>
+          <td >OTP</td>
+          <td>{{complaint_detail.otp}}</td>
+        </tr>
+        <tr>
+          <td>Month Of Purchase</td>
+          <td>{{complaint_detail.month_of_purchase ? complaint_detail.month_of_purchase:'N/A'}}</td>
+        </tr>
+        <tr>
+          <td >Visit Date / Time</td>
+          <td>{{complaint_detail.vis_date | date:'d MMMM y'}} / {{complaint_detail.vis_time}}</td>
+        </tr>
+        <tr>
+          <td >Complaint Remark</td>
+          <td>{{complaint_detail.nature_problem}}</td>
+        </tr>
+        
+        <tr>
+          <td >Status</td>
+          <td><span class="{{complaint_detail.complaintStatus}}">{{complaint_detail.complaintStatus}}</span></td>
+        </tr>
+        <tr>
+          <td >Address</td>
+          <td>{{complaint_detail.address}} {{complaint_detail.city}} {{complaint_detail.district}} {{complaint_detail.state}} {{complaint_detail.pincode}}</td>
+        </tr>
+        <tr  *ngIf="complaint_detail.complaintStatus=='Closed'">
+          <td > Closed By</td>
+          <td>{{complaint_detail.cancelled_by}}</td>
+        </tr>
+        <tr  *ngIf="complaint_detail.complaintStatus=='Closed'">
+          <td >Close Date</td>
+          <td><span class="{{complaint_detail.complaintStatus}}">{{complaint_detail.cancel_date |  date:'d MMMM y'}}</span></td>
+        </tr>
+        <tr  *ngIf="complaint_detail.complaintStatus=='Cancel'">
+          <td >Cancel By</td>
+          <td>{{complaint_detail.cancelled_by}}</td>
+        </tr>
+        <tr  *ngIf="complaint_detail.complaintStatus=='Cancel'">
+          <td >Cancel Date</td>
+          <td>{{complaint_detail.cancel_date |  date:'d MMMM y'}}</td>
+        </tr>
+        
+        <tr  *ngIf="complaint_detail.reason_cancel">
+          <td >Reason</td>
+          <td>{{complaint_detail.reason_cancel}}</td>
+        </tr>
+        <!-- <tr  *ngIf="complaint_detail.amount!='0'">
+          <td >Amount Paid</td>
+          <td>₹ {{complaint_detail.amount}}</td>
+        </tr> -->
+      </table>
+      
+      
+      <ng-container *ngIf="complaint_media.length > 0">
+        <p class="input-head mb10">{{'Complaint image' | translate}}</p>
+        <div class="add-new padding0" >
+          <div class="uplode-image" >
+            <ul>
+              <li *ngFor="let image of complaint_media;let i=index;">
+                <img  src="{{url + image.file_name}}" (click)="viewImage(url + image.file_name)">
+              </li>
+            </ul>
+          </div>
+        </div>
+      </ng-container>
+      
+      
+      <ng-container *ngIf="invoiceImg.length > 0">
+        <p class="input-head mb10">{{'Invoice image' | translate}}</p>
+        <div class="add-new padding0" >
+          <div class="uplode-image" >
+            <ul>
+              <li *ngFor="let image of invoiceImg; let i=index;">
+                <img  src="{{url + image.image_name}}" (click)="viewImage(url + image.image_name)">
+              </li>
+            </ul>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    
+    
+    <div class="profile-card">
+      <div class="text-center">
+        <h2>{{ 'Plumber Information' | translate }}</h2>
+      </div>
+      <div class="text-box">
+        <p>Name</p>
+        <h6>{{complaint_detail.plumberName ? complaint_detail.plumberName : 'NA'}}</h6>
+      </div>
+      <div class="text-box">
+        <p>Mobile Number</p>
+        <h6>{{complaint_detail.plumberMobileNo ? complaint_detail.plumberMobileNo : 'NA'}}</h6>
+      </div>
+      <!-- <div class="text-box"  *ngIf="rating_star > '0'">
+        <p>Rating</p>
+        <ul>
+          <li [ngClass]="{'active':rating_star>='1'}"><a><i class="material-icons" >star</i></a></li>
+          <li [ngClass]="{'active':rating_star>='2'}"><a><i class="material-icons" >star</i></a></li>
+          <li [ngClass]="{'active':rating_star>='3'}"><a><i class="material-icons" >star</i></a></li>
+          <li [ngClass]="{'active':rating_star>='4'}"><a><i class="material-icons"  >star</i></a></li>
+          <li [ngClass]="{'active':rating_star>='5'}"><a><i class="material-icons" >star</i></a></li>
+          <li>{{rating_star}} Star {{complaint_detail.total_votes}} Complaints</li>
+        </ul>
+      </div> -->
+    </div>
+    
+    <div class="profile-card" *ngIf="complaint_detail.plumberName && complaint_detail.complaintStatus=='Closed'">
+      <div class="text-center">
+        <h2>{{ 'Rating a plumber' | translate }}</h2>
+      </div>
+      <div class="text-box">
+        <ul>
+          <li [ngClass]="{'active':star>='1'}" (click)="rating('1')"><a><i class="material-icons">star_border</i></a></li>
+          <li [ngClass]="{'active':star>='2'}" (click)="rating('2')"><a><i class="material-icons">star_border</i></a></li>
+          <li [ngClass]="{'active':star>='3'}" (click)="rating('3')"><a><i class="material-icons">star_border</i></a></li>
+          <li [ngClass]="{'active':star>='4'}" (click)="rating('4')"><a><i class="material-icons">star_border</i></a></li>
+          <li [ngClass]="{'active':star>='5'}" (click)="rating('5')"><a><i class="material-icons">star_border</i></a></li>
+        </ul>
+      </div>
+    </div>
+    
+    
+    <button ion-button class="danger-btn" (click)="cancelComplaint('cancel')" *ngIf="complaint_detail.complaintStatus=='Pending'">
+      {{ 'Cancel Complaint' | translate}}
+    </button>
+  </div>
+  
+</ion-content>

@@ -1,0 +1,132 @@
+<!--
+  Generated template for the RedeemHistoryDetailPage page.
+  
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{'Redeem Detail' | translate}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  
+  
+  
+  <div class="card-outer">
+    <div class="history-card reverse" >
+      <div class="img-box">
+        <img src="{{url + data.image}}">
+      </div>
+      <div class="content-box">
+        <h6>{{data.gift_title | titlecase}}</h6>
+        <p><span>{{'Date' | translate}} : </span>{{dateFormat(data.date_created)}}</p>
+        <p><span>{{'Req Id' | translate}} : </span> REQ# {{data.id}}</p>
+        <p><span>{{'Status' | translate}}</span> : <span class="status {{data.gift_status}}">{{data.gift_status}}</span></p>
+        <h5>{{data.coupon_points}} <span>{{ 'Points' | translate}}</span></h5>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="card-outer" *ngIf="data.type == 'Gift'">
+    <table>
+      <tr *ngIf="data.receive_status != ''">
+        <td class="w130">{{'Gift Status' | translate}}</td>
+        <td><strong class="{{data.receive_status}}">{{data.receive_status}}</strong></td>
+      </tr>
+      <tr *ngIf="data.receive_status != ''">
+        <td>{{'Shipped Type' | translate}}</td>
+        <td>{{data.shipped_type}}</td>
+      </tr>
+      <tr *ngIf="data.receive_status != ''">
+        <td>{{'Estimated Date' | translate}}</td>
+        <td>{{dateFormat(data.estimated_date)}}</td>
+      </tr>
+      <tr *ngIf="data.shipping_information">
+        <td>{{'Shipping Description' | translate}}</td>
+        <td>{{data.shipping_information}}</td>
+      </tr>
+      <tr>
+        <td>{{'Shipping Address' | translate}}</td>
+        <td>{{data.shipping_address}}</td>
+      </tr>
+      <tr *ngIf="data.remark != ''">
+        <td>{{'Received Remark' | translate}}</td>
+        <td>{{data.remark}}</td>
+      </tr>
+    </table>
+  </div>
+  
+  <div class="card-outer" *ngIf="data.type == 'Cash'">
+    <table>
+      <tr *ngIf="data.receive_status != ''">
+        <td class="w130">{{'Gift Status' | translate}}</td>
+        <td><strong class="{{data.receive_status}}">{{data.receive_status}}</strong></td>
+      </tr>
+      
+      <!-- <tr *ngIf="data.paytm_mobile != '' && data.payment_type == 'paytm'">
+        <td>Paytm number</td>
+        <td>{{data.paytm_mobile}}</td>
+      </tr> -->
+      <tr *ngIf="data.account_holder_name != '' && data.payment_type == 'bank'">
+        <td>{{'Account Holder Name' | translate}}</td>
+        <td>{{data.account_holder_name | titlecase}}</td>
+      </tr>
+      <tr *ngIf="data.bank_name != '' && data.payment_type == 'bank'">
+        <td>{{'Bank Name' | translate}}</td>
+        <td>{{data.bank_name | titlecase}}</td>
+      </tr>
+      <tr *ngIf="data.bank_account_number != '' && data.payment_type == 'bank'">
+        <td>{{'Account Number' | translate}}</td>
+        <td>{{data.bank_account_number}}</td>
+      </tr>
+      <tr *ngIf="data.bank_ifsc_code != '' && data.payment_type == 'bank'">
+        <td>{{'IFSC Code' | translate}}</td>
+        <td>{{data.bank_ifsc_code}}</td>
+      </tr>
+
+      <tr *ngIf="data.transfer_date">
+        <td>{{'Transfer Date' | translate}}</td>
+        <td>{{dateTimeFomrat(data.transfer_date)}}</td>
+      </tr>
+      <tr *ngIf="data.transfer_date">
+        <td>{{'Transfer Status' | translate}}</td>
+        <td class="{{data.transfer_status}}">{{data.transfer_status | titlecase}}</td>
+      </tr>
+      <tr *ngIf="data.transfer_date">
+        <td>{{'Transaction ID' | translate}}</td>
+        <td>{{data.razorpay_payout_id}}</td>
+      </tr>
+      
+      <tr *ngIf="data.remark != ''">
+        <td>{{'Received Remark' | translate}}</td>
+        <td>{{data.remark}}</td>
+      </tr>
+    </table>
+  </div>
+  
+  <div class="text-right" *ngIf="data.receive_status == 'Transfered' || data.receive_status == 'Shipped'">
+    <button ion-button color="primary" (click)="toggle = !toggle;">{{'Mark as Recieved' | translate}}</button>
+  </div>
+  
+  
+  <div class="cs-box-modal"  [ngClass] ="{'on' : toggle == true}">
+    <div class="modal-body">
+      <p>{{'Receiving Remark' | translate}}</p>
+      <div class="input-section">
+        <div class="input-adjust m0">
+          <textarea class="radius-none" type="text" placeholder="Enter Remark" name="receiving_remark"  #receiving_remark="ngModel" [(ngModel)]="data.receiving_remark"  required></textarea>
+        </div>
+      </div>
+      
+      <div class="footer-btn">
+        <a ion-button outline class="mr10" color="red" (click)="toggle = !toggle">{{'Cancel' | translate}}</a>	
+        <button ion-button color="primary" [disabled]="!data.receiving_remark" (click)="submit()">{{'Save' | translate}}</button>
+      </div>	
+    </div>
+  </div>
+  
+  
+</ion-content>

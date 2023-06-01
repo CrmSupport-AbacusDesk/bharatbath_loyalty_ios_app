@@ -1,0 +1,66 @@
+<!--
+  Generated template for the TaskPage page.
+  
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header class="main-header remove">
+  <ion-navbar>
+    <ion-title>{{'Complaint Status' | translate}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+  <div class="form">
+    <form #f="ngForm" (ngSubmit)="f.form.valid && submit()">
+      <div >
+        <ion-list no-lines >
+          
+          <ng-container *ngIf="lable ==  'Pending' ">
+            <ion-item [ngClass]="{'error':f.submitted && remark_type?.invalid}">
+              <ion-label floating>{{ 'Remark Type' | translate }} <span>*</span></ion-label>
+              <ion-select name="remark_type" #remark_type="ngModel" [(ngModel)]="status.remark_type" required>
+                <!-- <ion-option value="pending_parts">{{'Pending For Spare Parts' | translate }}</ion-option> -->
+                <ion-option value="Product not BIUT">Product not BIUT</ion-option>
+                <ion-option value="Customer Rejecting to pay">Customer Rejecting to pay</ion-option>
+                <ion-option value="Product out of warranty">Product out of warranty</ion-option>
+                <ion-option value="Customer not available">Customer not available</ion-option>
+                <ion-option value="Spare parts not available">Spare parts not available</ion-option>
+                <ion-option value="other">{{'Other' | translate}}</ion-option>
+              </ion-select>
+            </ion-item>
+            <div class="eror" *ngIf="f.submitted && remark_type?.invalid">
+              <p> {{ 'This field is required' | translate}}</p>
+            </div>
+          </ng-container>
+          
+          <ng-container *ngIf="status.remark_type == 'other'">
+            <ion-item [ngClass]="{'error':f.submitted && remark?.invalid}">
+              <ion-label floating>{{'Remark' | translate}} <span>*</span></ion-label>
+              <ion-textarea type="text" name="remark" #remark="ngModel" [(ngModel)]="status.remark"  required></ion-textarea>
+            </ion-item>
+            <div class="eror" *ngIf="f.submitted && remark?.invalid">
+              <p> {{ 'This field is required' | translate}}</p>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="lable=='Closed'">  
+          <ion-item    [ngClass]="{'error':f.submitted && otp?.invalid}">
+            <ion-label floating>{{'Enter OTP Sent to' | translate}} {{customerMobileNo}}</ion-label>
+            <ion-input type="tel" [(ngModel)]="status.otp" name="otp" #otp="ngModel" maxlength="6" minlength="6" (keypress)="MobileNumber($event)" required></ion-input>
+          </ion-item>
+          <div class="eror" *ngIf="f.submitted && otp?.invalid">
+            <p> {{ 'This field is required' | translate}}</p>
+          </div>
+        </ng-container>
+        </ion-list>
+      </div>
+      
+      <div>
+        <button ion-button class="primary-btn" [disabled]="saveFlag == true">
+          {{'Save' | translate}}
+        </button>
+      </div>
+    </form>
+  </div>
+</ion-content>

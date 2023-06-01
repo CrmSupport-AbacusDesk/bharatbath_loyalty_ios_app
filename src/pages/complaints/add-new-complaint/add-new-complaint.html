@@ -1,0 +1,147 @@
+
+<ion-header class="main-header remove">
+    <ion-navbar>
+        <ion-title>Add new complaint</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content >
+    <div class="form pt0">
+        <form  #f="ngForm" (ngSubmit)="f.form.valid && submit()">
+            <div class="">
+                <ion-list no-lines >
+                    <ion-item [ngClass]="{'error':f.submitted && nature_problem?.invalid}">
+                        <ion-label floating>{{ 'Remark' | translate }} <span>*</span></ion-label>
+                        <ion-textarea type="text" name="nature_problem" #nature_problem="ngModel" [(ngModel)]="data.nature_problem" required></ion-textarea>
+                    </ion-item>
+                    <div class="eror" *ngIf="f.submitted && nature_problem?.invalid">
+                        <p> {{ 'This field is required' | translate}}</p>
+                    </div>
+                    
+                    
+                  
+                    <p class="input-head">{{'Complaint visit date' | translate}}</p>
+
+                    <div class="flex-input">
+                        <div class="items-block">
+                            <ion-item [ngClass]="{'error':f.submitted && vis_date?.invalid}">
+                                <ion-label floating>{{ 'Visiting Date' | translate }} <span>*</span></ion-label>
+                                <ion-datetime displayFormat="DD/MM/YYYY" [min]="mindate" type="text"  name="vis_date" #vis_date="ngModel" [(ngModel)]="data.vis_date" required>
+                                </ion-datetime>
+                            </ion-item>
+                            <div class="eror" *ngIf="f.submitted && vis_date?.invalid">
+                                <p> {{ 'This field is required' | translate}}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="items-block">
+                            <ion-item [ngClass]="{'error':f.submitted && vis_time?.invalid}">
+                                <ion-label floating>{{ 'Visiting time' | translate }} <span>*</span></ion-label>
+                                <ion-select name="vis_time" #vis_time="ngModel" [(ngModel)]="data.vis_time" required>
+                                    <ion-option value='8 AM to 9 AM'>8 AM to 9 AM</ion-option>
+                                    <ion-option value='9 AM to 10 AM'>9 AM to 10 AM</ion-option>
+                                    <ion-option value='10 AM to 11 AM'>10 AM to 11 AM</ion-option>
+                                    <ion-option value='11 AM to 12pm'>11am to 12pm</ion-option>
+                                    <ion-option value='12 PM to 1 PM'>12 PM to 1 PM</ion-option>
+                                    <ion-option value='1 PM to 2 PM'>1 PM to 2 PM</ion-option>
+                                    <ion-option value='2 PM to 3 PM'>2 PM to 3 PM</ion-option>
+                                    <ion-option value='3 PM to 4 PM'>3 PM to 4 PM</ion-option>
+                                    <ion-option value='4 PM to 5 PM'>4 PM to 5 PM</ion-option>
+                                    <ion-option value='5 PM to 6 PM'>5 PM to 6 PM</ion-option>
+                                    <ion-option value='6 PM to 7 PM'>6 PM to 7 PM</ion-option>
+                                </ion-select>
+                            </ion-item>
+                            <div class="eror" *ngIf="f.submitted && vis_time?.invalid">
+                                <p> {{ 'This field is required' | translate}}</p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <p class="input-head">{{'Month/year of product purchase' | translate}}</p>
+                    <div class="flex-input">
+                        <div class="items-block">
+                            <ion-item >
+                                <ion-label floating>{{ 'Month' | translate }}</ion-label>
+                                <ion-select name="month" #month="ngModel" [(ngModel)]="data.month">
+                                    <ion-option value='Janaury'>Janaury</ion-option>
+                                    <ion-option value='February'>February</ion-option>
+                                    <ion-option value='March'>March</ion-option>
+                                    <ion-option value='April'>April</ion-option>
+                                    <ion-option value='May'>May</ion-option>
+                                    <ion-option value='June'>June</ion-option>
+                                    <ion-option value='July'>July</ion-option>
+                                    <ion-option value='August'>August</ion-option>
+                                    <ion-option value='September'>September</ion-option>
+                                    <ion-option value='October'>October</ion-option>
+                                    <ion-option value='November'>November</ion-option>
+                                    <ion-option value='December'>December</ion-option>
+                                </ion-select>
+                            </ion-item>
+                        </div>
+                        <div class="items-block">
+                            <ion-item floating>
+                                <ion-label floating>{{'Year' | translate}}</ion-label>
+                                <ion-input type="tel" name="year" #year="ngModel" [(ngModel)]="data.year" min=0 maxlength=4 minlength=4></ion-input>
+                            </ion-item>
+                        </div>
+                    </div>
+                </ion-list>
+
+
+                <p class="input-head mb10">{{'Attach complaint image' | translate}}</p>
+                <div class="add-new padding0" >
+                    <div class="uplode-image" >
+                        <ul>
+                            <li *ngFor="let pic of image_data;let i = index;">
+                                <img src="{{pic.image_name}}"  >
+                                <a (click)="delete(i)"> <i class="material-icons" >clear</i></a>
+                            </li>
+                            
+                            
+                            
+                            <li (click)="onUploadChange()" >
+                                <label>
+                                    <input type="file" style="display: none;">
+                                    <div class="other">
+                                        <i class="material-icons" >cloud_upload</i>
+                                        <p>{{'Photo' | translate}}</p>
+                                    </div>
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                
+                <p class="input-head mb10">{{'Attach invoice image' | translate}}</p>
+                <div class="add-new padding0" >
+                    <div class="uplode-image" >
+                        <ul>
+                            <li *ngFor="let pic of bill_data;let i = index;">
+                                <img src="{{pic.image_name}}"  >
+                                <a (click)="delete(i)"> <i class="material-icons" >clear</i></a>
+                            </li>
+                            
+                            
+                            
+                            <li (click)="uploadBill()" >
+                                <label>
+                                    <input type="file" style="display: none;">
+                                    <div class="other">
+                                        <i class="material-icons" >cloud_upload</i>
+                                        <p>{{'Upload Bill' | translate}}</p>
+                                    </div>
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <button  ion-button class="primary-btn mt16" >
+                    {{'Save' | translate}}
+                </button>
+            </div>
+            
+        </form>
+    </div>
+</ion-content>

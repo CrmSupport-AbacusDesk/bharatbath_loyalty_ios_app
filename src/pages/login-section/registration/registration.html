@@ -1,0 +1,276 @@
+<ion-header class="main-header remove">
+    <ion-navbar>
+        <ion-title>{{ 'Registration' | translate }}</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <form #f="ngForm" (ngSubmit)="f.form.valid && submit()">
+        
+        <div class="form">
+            <div class="profile-card">
+                <div class="text-center">
+                    <h2>{{ 'Basic information' | translate }}</h2>
+                </div>
+                <ion-list no-lines class="padding10">
+<!--             
+                    <div *ngIf="data.type =='Customer'">
+                        <ion-item [ngClass]="{'error':f.submitted && salutation?.invalid}">
+                            <ion-label floating>{{ 'Salutation' | translate }} <span>*</span></ion-label>
+                            <ion-select name="salutation" #salutation="ngModel" [(ngModel)]="data.salutation" required>
+                                <ion-option value="Mr">{{'Mr' | translate }}</ion-option>
+                                <ion-option value="Mrs">{{'Mrs' | translate}}</ion-option>
+                            </ion-select>
+                        </ion-item>
+                        
+                        <div class="eror" *ngIf="f.submitted && salutation?.invalid">
+                            <p> {{ 'This field is required' | translate}}</p>
+                        </div>
+                    </div> -->
+                    <ion-item  [ngClass]="{'error':f.submitted && first_name?.invalid}">
+                        <ion-label floating>{{ 'Name' | translate }} <span>*</span></ion-label>
+                        <ion-input type="text" name="first_name" #first_name="ngModel" [(ngModel)]="data.first_name" required></ion-input>
+                    </ion-item>
+                    <div class="eror" *ngIf="f.submitted && first_name?.invalid">
+                        <p> {{ 'This field is required' | translate}}</p>
+                    </div>
+                    
+                    <!-- <ng-container *ngIf="data.type=='Customer'">
+                        <ion-item >
+                            <ion-label floating >{{ 'Middle name' | translate }}</ion-label>
+                            <ion-input type="text" name="middle_name" #middle_name="ngModel" [(ngModel)]="data.middle_name"></ion-input>
+                        </ion-item>
+                        
+                        
+                        <ion-item  [ngClass]="{'error':f.submitted && last_name?.invalid}">
+                            <ion-label floating>{{ 'Last Name' | translate }} <span>*</span></ion-label>
+                            <ion-input type="text" name="last_name" #last_name="ngModel" [(ngModel)]="data.last_name" required></ion-input>
+                        </ion-item>
+                        
+                        <div class="eror" *ngIf="f.submitted && last_name?.invalid">
+                            <p> {{ 'This field is required' | translate}}</p>
+                        </div>
+                    </ng-container> -->
+                    
+                    <ion-item  [ngClass]="{'error':f.submitted && mobile_no?.invalid}" >
+                        <ion-label floating>{{ 'Mobile No.' | translate}} <span>*</span></ion-label>
+                        <ion-input type="text" name="mobile_no" #mobile_no="ngModel" [(ngModel)]="data.mobile_no" required  (keypress)="MobileNumber($event)" readonly></ion-input>
+                        <div class="eror" *ngIf="f.submitted && mobile_no?.invalid">
+                            <p> {{ 'Invalid Mobile No.' | translate}}</p>
+                        </div>
+                    </ion-item>
+                    
+                    <ng-container *ngIf="data.type=='Customer'">
+                        <ion-item  [ngClass]="{'error':(f.submitted && email?.invalid) || (f.submitted && !email.valid)}">
+                            <ion-label floating>{{'Email ID' | translate}}</ion-label>
+                            <ion-input type="email" name="email" #email="ngModel" [(ngModel)]="data.email" pattern="[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"></ion-input>
+                        </ion-item>
+                        
+                        <div class="eror" *ngIf="email.errors?.pattern">
+                            <p> {{ 'Invalid email id' | translate}}</p>
+                        </div>
+                        
+                        <ion-item  [ngClass]="{'error':f.submitted && alternate_mobile_no?.invalid }">
+                            <ion-label floating>{{ 'Alt Mobile no.' | translate}}</ion-label>
+                            <ion-input type="tel" name="alternate_mobile_no" #alternate_mobile_no="ngModel" [(ngModel)]="data.alternate_mobile_no"  pattern="^[6-9][0-9]{0,9}$" (keypress)="MobileNumber($event)"></ion-input>
+                        </ion-item>
+                        <div class="eror" *ngIf="alternate_mobile_no.errors?.pattern">
+                            <p> {{ 'Invalid Mobile No.' | translate}}</p>
+                        </div>
+                    </ng-container>
+                    
+                    <div *ngIf="data.type=='Plumber'">
+                        <ion-item >
+                            <ion-label floating>{{ 'Date of Birth' | translate }}</ion-label>
+                            <ion-datetime displayFormat="DD/MM/YYYY" max={{today_date}} type="text"  name="dob" #dob="ngModel" [(ngModel)]="data.dob" >
+                            </ion-datetime>
+                        </ion-item>
+                     
+                    </div>
+                </ion-list>
+            </div>
+            
+            
+            
+            
+            <div class="profile-card" >
+                <div class="text-center">
+                    <h2>{{ 'Address information' | translate }}</h2>
+                </div>
+                <ion-list no-lines class="padding10">
+                    <!-- (ngModelChange)="caps_add(data.address)" -->
+                    <ion-item [ngClass]="{'error':(f.address && address?.invalid) || (f.submitted && !address.valid)}">
+                        <ion-label floating>{{ 'Street' | translate }} <span>*</span></ion-label>
+                        <ion-input type="text"  type="text"  name="address"  #address="ngModel" [(ngModel)]="data.address"  required></ion-input>
+                    </ion-item>
+                    <div class="eror" *ngIf="f.submitted && address?.invalid">
+                        <p> {{ 'This field is required' | translate}}</p>
+                    </div>
+                    <ion-item  [ngClass]="{'error':f.submitted && pincode?.invalid}">
+                        <ion-label floating>{{ 'Pincode' | translate}} <span>*</span></ion-label>
+                        <ion-input type="tel" name="pincode" [(ngModel)]="data.pincode" #pincode="ngModel" maxlength="6" minlength="6" (input)="getaddress(data.pincode)" required></ion-input>
+                    </ion-item>
+                    <div class="eror" *ngIf="f.submitted && pincode?.invalid">
+                        <p> {{ 'This field is required' | translate}}</p>
+                    </div>
+                    <ion-item [ngClass]="{'error':f.submitted && state?.invalid}">
+                        <ion-label floating>{{ 'State' | translate }} <span>*</span></ion-label>
+                        <ion-select name="state" [okText]="'OK' | translate" [cancelText]="'Cancel' | translate"  [(ngModel)]="data.state" #state="ngModel" (ngModelChange)="getDistrictList(data.state)" required>
+                            <ion-option *ngFor="let row of state_list" value="{{row.state_name}}">{{row.state_name}}</ion-option>
+                        </ion-select>
+                    </ion-item>
+                    <div class="eror" *ngIf="f.submitted && state?.invalid">
+                        <p> {{ 'This field is required' | translate}}</p>
+                    </div>
+                    
+                    <ion-item [ngClass]="{'error':f.submitted && district?.invalid}">
+                        <ion-label floating>{{ 'District' | translate }} <span>*</span></ion-label>
+                        <ion-select name="district" [okText]="'OK' | translate" [cancelText]="'Cancel' | translate" [(ngModel)]="data.district" (ngModelChange)="getDealerList(data.district)" #district="ngModel" required>
+                            <ion-option *ngFor="let row of district_list" value="{{row.district_name}}">{{row.district_name}}</ion-option>
+                        </ion-select>
+                    </ion-item>
+                    
+                    <div class="eror" *ngIf="f.submitted && district?.invalid">
+                        <p> {{ 'This field is required' | translate}}</p>
+                    </div>
+                    
+                    <ion-item [ngClass]="{'error':f.submitted && city?.invalid}">
+                        <ion-label floating >{{ 'City' | translate }} <span>*</span></ion-label>
+                        <ion-input type="text" name="city" [(ngModel)]="data.city" #city="ngModel" required ></ion-input>
+                    </ion-item>
+                    <div class="eror" *ngIf="f.submitted && city?.invalid">
+                        <p> {{ 'This field is required' | translate}}</p>
+                    </div>
+                    
+                    
+                </ion-list>
+            </div>
+
+            <div class="profile-card" *ngIf="data.type=='Plumber'">
+                <div class="text-center">
+                    <h2>{{ 'Dealer  information' | translate }}</h2>
+                </div>
+                <ion-list no-lines class="padding10">
+                    <ion-item [ngClass]="{'error':f.submitted && dealer?.invalid}">
+                        <ion-label floating>{{ 'Dealer' | translate }}</ion-label>
+                        <ion-select name="dealer" [okText]="'OK' | translate" [cancelText]="'Cancel' | translate" [(ngModel)]="data.dealer_id" #dealer="ngModel">
+                            <ion-option *ngFor="let row of dealers" value="{{row.id}}">{{row.firm_name}}</ion-option>
+                        </ion-select>
+                    </ion-item>
+                </ion-list>
+            </div>
+            
+            <div class="profile-card" *ngIf="data.type=='Plumber'">
+                <div class="text-center">
+                    <h2>{{ 'Document information' | translate }}</h2>
+                </div>
+                <ion-list no-lines class="padding10" >
+                    <ion-item>
+                        <ion-label floating>{{ 'Select Document' | translate }}</ion-label>
+                        <ion-select name="document_type	" [okText]="'OK' | translate" [cancelText]="'Cancel' | translate"  [(ngModel)]="data.document_type" #document_type="ngModel" >
+                            <ion-option value="Aadhaar Card">{{ 'Aadhaar Card' | translate }}</ion-option>
+                            <ion-option value="PanCard">{{ 'Pan Card' | translate}}</ion-option>
+                            <ion-option value="VoterCard">{{ 'Voter Card' | translate }}</ion-option>
+                        </ion-select>
+                    </ion-item>
+                    
+                    <div class="upload-document mt16" (click)="onUploadChange()" >
+                        <p *ngIf="data.document_image==''"><i class="material-icons">add_circle</i><br>{{ 'Upload Document' | translate}}</p>
+                        <img *ngIf="data.document_image != ''"[src]="data.document_image" alt="">
+                    </div>
+                    
+                    <ion-item [ngClass]="{'error':f.submitted && document_no?.invalid}" *ngIf="data.document_type=='Aadhaar Card'" >
+                        <ion-label floating>{{ 'Aadhaar Card Number*' | translate }}</ion-label>
+                        <ion-input type="tel" name="document_no" #document_no="ngModel" [(ngModel)]="data.document_no"  maxlength="12" minlength="12" required ></ion-input>
+                    </ion-item>	
+                    <ng-container *ngIf="data.document_type=='PanCard'">
+                        <ion-item  [ngClass]="{'error':f.submitted && document_no?.invalid}">
+                            <ion-label floating>{{ 'Pan Card Number' | translate }}</ion-label>
+                            <ion-input type="text" name="document_no" #document_no="ngModel" [(ngModel)]="data.document_no"  #document_no="ngModel"  pattern="[A-z]{5}[0-9]{4}[A-z]{1}"  required ></ion-input>
+                        </ion-item>	
+                        <div class="eror">
+                            <p *ngIf="document_no.errors?.pattern">{{'Invaild pan card number' |translate}}</p>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="data.document_type=='VoterCard'">
+                        <ion-item   [ngClass]="{'error':f.submitted && document_no?.invalid}">
+                            <ion-label floating>{{ 'Voter Card Number' | translate }}</ion-label>
+                            <ion-input type="text" name="document_no" #document_no="ngModel" pattern="[A-Z]{3}[0-9]{7}" [(ngModel)]="data.document_no"  required></ion-input>
+                        </ion-item>
+                        <div class="eror">
+                            <p *ngIf="document_no.errors?.pattern">{{'Invaild voter card number' | translate}}</p>
+                        </div>
+                    </ng-container>
+                    
+                </ion-list>
+            </div>
+           
+            
+            <div class="profile-card" *ngIf="data.type=='Plumber'">
+                <div class="text-center">
+                    <h2>{{ 'Bank information' | translate }}</h2>
+                </div>
+                <ion-list no-lines class="padding10" >
+                    
+                    
+                    
+                    <ion-item  [ngClass]="{'error':f.submitted && account_holder_name?.invalid}">
+                        <ion-label floating>{{'Account Holder Name' | translate}}</ion-label>
+                        <ion-input type="text"  name="account_holder_name"  ng-pattern-restrict #account_holder_name ="ngModel" [(ngModel)]="data.account_holder_name "></ion-input>
+                    </ion-item>
+                    
+                    <ion-item [ngClass]="{'error':f.submitted && bank_name?.invalid}">
+                        <ion-label floating>{{'Bank Name' | translate}}</ion-label>
+                        <ion-input type="text"  name="bank_name " pattern="[\x00-\x7F]+" ng-pattern-restrict #bank_name ="ngModel" [(ngModel)]="data.bank_name "></ion-input>
+                    </ion-item> 
+                    
+                    
+                    <ion-item >
+                        <ion-label floating>{{'Account Number' | translate}}</ion-label>
+                        <ion-input type="tel" name="account_no " #account_no ="ngModel" [(ngModel)]="data.account_no"  minlength="9" maxlength="18"></ion-input>
+                    </ion-item>
+                    <!-- <div class="eror" *ngIf="f.submitted && city?.invalid">
+                        <p> {{ 'Invalid account number' | translate}}</p>
+                    </div> -->
+                    
+                    <ion-item [ngClass]="{'error':f.submitted && ifsc_code?.invalid}">
+                        <ion-label floating>{{'IFSC Code' | translate}}</ion-label>
+                        <ion-input type="text"  name="ifsc_code " #ifsc_code ="ngModel" [(ngModel)]="data.ifsc_code"  pattern="^[A-Z]{4}[0][A-Z0-9]{6}$"></ion-input>
+                    </ion-item>	
+                    <div class="eror" *ngIf="ifsc_code.errors?.pattern">
+                        <p> {{ 'Invalid IFSC code' | translate}}</p>
+                    </div>
+                    
+                    <!-- <ion-item [ngClass]="{'error':f.submitted && paytm_mobile_number?.invalid}">
+                        <ion-label floating>{{'Paytm Mobile Number' | translate}}</ion-label>
+                        <ion-input type="tel"  name="paytm_mobile_number " #paytm_mobile_number ="ngModel"  pattern="^[6-9][0-9]{0,9}$" [(ngModel)]="data.paytm_mobile_number" minlength="10" maxlength="10" ></ion-input>
+                        <div class="eror" *ngIf="f.submitted && paytm_mobile_number?.invalid || paytm_mobile_number.errors?.pattern">
+                            <p> {{ 'Invalid mobile no.' | translate}}</p>
+                        </div>
+                    </ion-item> -->
+                    
+                </ion-list>
+            </div>
+            
+            
+            
+            <div class="profile-card" *ngIf="data.type=='Plumber'">
+                <div class="text-center">
+                    <h2>{{ 'Referral Code' | translate }}</h2>
+                </div>  
+                <ion-list no-lines class="padding10">
+                    <ion-item [ngClass]="{'error':f.submitted && referral_by_code?.invalid}" *ngIf="data.type=='Plumber'" >
+                        <ion-label floating>{{ 'Referral Code' | translate }}</ion-label>
+                        <ion-input type="text" name="referral_by_code" #referral_by_code="ngModel" [(ngModel)]="data.referral_by_code"></ion-input>
+                    </ion-item>
+                </ion-list>
+            </div>
+
+            
+            <button ion-button class="primary-btn">
+                {{ 'Submit' | translate}}
+            </button>
+        </div>
+      
+    </form>
+</ion-content>
